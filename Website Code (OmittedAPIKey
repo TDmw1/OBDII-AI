@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Automotive Diagnostic Assistant</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d3748; /* gray-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568; /* gray-600 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #718096; /* gray-500 */
+        }
+        .step-section {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .step-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            position: absolute;
+            pointer-events: none;
+        }
+        /* Styles for the prose output from the AI */
+        .prose-output h3 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #fff;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid #4a5568;
+        }
+        .prose-output h3:first-child {
+            margin-top: 0;
+        }
+        .prose-output p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #d1d5db; /* gray-300 */
+        }
+        .prose-output ul, .prose-output ol {
+            margin-left: 1.25rem;
+            list-style-position: outside;
+            margin-bottom: 1rem;
+        }
+        .prose-output li {
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+        }
+        .prose-output strong {
+             color: #fff;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-2xl mx-auto bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 space-y-6">
+        
+        <!-- Header Section -->
+        <header class="text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">AI Automotive Diagnostic Assistant</h1>
+            <p id="step-subtitle" class="text-gray-400">Step 1 of 4: Vehicle Information</p>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="relative">
+            
+            <!-- Step 1: Vehicle Information -->
+            <div id="step-1" class="step-section space-y-6">
+                <div class="bg-gray-700 p-5 rounded-xl">
+                    <h2 class="text-xl font-semibold mb-4 text-white flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M14 16.5V18a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-1.5"></path><path d="M18 10h-2a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2v-4Z"></path><path d="M18 9.5V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v3.5"></path><path d="M12 2v2"></path><path d="M7 2v2"></path><path d="M17 2v2"></path></svg>
+                        Vehicle Information
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="make" class="block text-sm font-medium text-gray-300 mb-1">Make</label>
+                            <input type="text" id="make" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., Acura">
+                        </div>
+                        <div>
+                            <label for="model" class="block text-sm font-medium text-gray-300 mb-1">Model</label>
+                            <input type="text" id="model" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., MDX">
+                        </div>
+                        <div>
+                            <label for="year" class="block text-sm font-medium text-gray-300 mb-1">Year</label>
+                            <input type="number" id="year" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., 2005">
+                        </div>
+                    </div>
+                </div>
+                <button id="btn-step1-next" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition">Next: Symptoms</button>
+            </div>
+
+            <!-- Step 2: Observed Symptoms -->
+            <div id="step-2" class="step-section space-y-6 step-hidden">
+                <div class="bg-gray-700 p-5 rounded-xl">
+                     <h2 class="text-xl font-semibold mb-4 text-white flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M10.3 2H14l5.1 5.1L19 7.4V11l-3 3-3-3-3 3-3-3V7.4L5.7 2z"></path><path d="m7 11 5 5 5-5"></path></svg>
+                        Observed Symptoms
+                    </h2>
+                    <textarea id="symptoms" rows="8" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., Engine hesitates on acceleration, ticking noise from engine bay, check engine light is on."></textarea>
+                </div>
+                <button id="btn-step2-next" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition">Next: OBD-II Data</button>
+            </div>
+            
+            <!-- Step 3: OBD-II Data Input -->
+            <div id="step-3" class="step-section space-y-6 step-hidden">
+                <div class="bg-gray-700 p-5 rounded-xl">
+                    <h2 class="text-xl font-semibold mb-4 text-white flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                        OBD-II Data
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="dtc_codes" class="block text-sm font-medium text-gray-300 mb-1">Diagnostic Trouble Codes (DTCs)</label>
+                            <input type="text" id="dtc_codes" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., P0300, P0171">
+                        </div>
+                        <div>
+                            <label for="live_data" class="block text-sm font-medium text-gray-300 mb-1">Key Live Data (PIDs)</label>
+                            <textarea id="live_data" rows="3" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., Fuel Trim: +15%, Coolant Temp: 85C"></textarea>
+                        </div>
+                    </div>
+                    <div class="relative flex py-5 items-center">
+                        <div class="flex-grow border-t border-gray-600"></div>
+                        <span class="flex-shrink mx-4 text-gray-400">OR</span>
+                        <div class="flex-grow border-t border-gray-600"></div>
+                    </div>
+                    <button id="btn-live-stream" class="w-full bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded-lg transition flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M20 12V8a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v4"></path><path d="M5 18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2"></path><path d="M12 12v6"></path></svg>
+                        Read From Live Device (WIP)
+                    </button>
+                    <p id="live-stream-status" class="text-center text-sm text-yellow-400 mt-2"></p>
+                </div>
+                 <button id="run-diagnosis-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition">Run AI Diagnosis</button>
+            </div>
+
+            <!-- Step 4: AI Analysis -->
+            <div id="step-4" class="step-section space-y-6 step-hidden">
+                <div class="bg-gray-700 p-5 rounded-xl flex flex-col">
+                    <h2 class="text-xl font-semibold mb-4 text-white flex items-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                        AI Diagnostic Analysis
+                    </h2>
+                    <div id="output-container" class="bg-gray-800/50 rounded-lg p-4 h-full min-h-[300px] max-h-[50vh] overflow-y-auto flex-grow">
+                        <!-- Loading state -->
+                        <div id="loading" class="hidden h-full flex flex-col items-center justify-center text-gray-400">
+                            <svg class="animate-spin h-8 w-8 text-blue-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <p class="text-lg">AI is analyzing the data...</p>
+                        </div>
+                        <!-- Error state -->
+                        <div id="error" class="hidden h-full flex flex-col items-center justify-center text-red-400">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 mb-4"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                             <p class="text-lg font-semibold">An Error Occurred</p>
+                             <p id="error-message" class="text-center"></p>
+                        </div>
+                        <!-- Final output -->
+                        <div id="output" class="prose-output max-w-none"></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <button id="btn-analyze-new-symptoms" class="w-full bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded-lg transition">Analyze New Symptoms</button>
+                     <button id="btn-start-over" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition">Analyze New Car</button>
+                </div>
+            </div>
+
+        </div> <!-- End Content Area -->
+
+    </div>
+
+    <script>
+        // --- State Management ---
+        const vehicleData = {
+            make: '',
+            model: '',
+            year: '',
+            symptoms: '',
+            dtcCodes: '',
+            liveData: ''
+        };
+
+        // --- DOM Element References ---
+        const subtitle = document.getElementById('step-subtitle');
+        const steps = {
+            1: document.getElementById('step-1'),
+            2: document.getElementById('step-2'),
+            3: document.getElementById('step-3'),
+            4: document.getElementById('step-4'),
+        };
+        const inputs = {
+            make: document.getElementById('make'),
+            model: document.getElementById('model'),
+            year: document.getElementById('year'),
+            symptoms: document.getElementById('symptoms'),
+            dtcCodes: document.getElementById('dtc_codes'),
+            liveData: document.getElementById('live_data'),
+        };
+        const outputDiv = document.getElementById('output');
+        const loadingDiv = document.getElementById('loading');
+        const errorDiv = document.getElementById('error');
+        const errorMessageP = document.getElementById('error-message');
+        const liveStreamStatus = document.getElementById('live-stream-status');
+
+        // --- Event Listeners ---
+        document.getElementById('btn-step1-next').addEventListener('click', () => {
+            if (inputs.make.value.trim() && inputs.model.value.trim() && inputs.year.value.trim()) {
+                vehicleData.make = inputs.make.value.trim();
+                vehicleData.model = inputs.model.value.trim();
+                vehicleData.year = inputs.year.value.trim();
+                showStep(2);
+            } else {
+                alert('Please fill in all vehicle information fields.');
+            }
+        });
+
+        document.getElementById('btn-step2-next').addEventListener('click', () => {
+             if (inputs.symptoms.value.trim()) {
+                vehicleData.symptoms = inputs.symptoms.value.trim();
+                showStep(3);
+            } else {
+                alert('Please describe the observed symptoms.');
+            }
+        });
+
+        document.getElementById('btn-live-stream').addEventListener('click', startLiveRead);
+        document.getElementById('run-diagnosis-btn').addEventListener('click', runAIDiagnosis);
+        document.getElementById('btn-analyze-new-symptoms').addEventListener('click', () => showStep(2));
+        document.getElementById('btn-start-over').addEventListener('click', () => {
+            // Reset all data and inputs
+            Object.keys(vehicleData).forEach(key => vehicleData[key] = '');
+            Object.keys(inputs).forEach(key => inputs[key].value = '');
+            showStep(1);
+        });
+        
+        // --- Functions ---
+        function showStep(stepNumber) {
+            Object.values(steps).forEach(stepEl => stepEl.classList.add('step-hidden'));
+            if (steps[stepNumber]) {
+                steps[stepNumber].classList.remove('step-hidden');
+            }
+            const titles = {
+                1: 'Step 1 of 4: Vehicle Information',
+                2: 'Step 2 of 4: Observed Symptoms',
+                3: 'Step 3 of 4: OBD-II Data',
+                4: 'Step 4 of 4: AI Diagnostic Analysis'
+            };
+            subtitle.textContent = titles[stepNumber] || '';
+        }
+
+        function startLiveRead() {
+            liveStreamStatus.textContent = 'Connecting to device and reading data...';
+            let countdown = 10;
+            const interval = setInterval(() => {
+                liveStreamStatus.textContent = `Reading live data... ${countdown}s remaining.`;
+                countdown--;
+                if (countdown < 0) {
+                    clearInterval(interval);
+                    liveStreamStatus.textContent = 'Live data stream complete!';
+                    // Populate fields with simulated data
+                    inputs.dtcCodes.value = "P0420, P0301";
+                    inputs.liveData.value = "Catalyst Temp Bank 1: 550C, O2 Sensor B1S2: 0.2V, Misfire Count Cyl 1: 15";
+                    setTimeout(() => liveStreamStatus.textContent = '', 3000);
+                }
+            }, 1000);
+        }
+
+        async function runAIDiagnosis() {
+            // If manual data was entered after a live stream, use it.
+            if(inputs.dtcCodes.value.trim() || inputs.liveData.value.trim()){
+                 vehicleData.dtcCodes = inputs.dtcCodes.value.trim();
+                 vehicleData.liveData = inputs.liveData.value.trim();
+            }
+
+            if (!vehicleData.dtcCodes) {
+                alert('Please provide Diagnostic Trouble Codes (DTCs) manually or via the live read.');
+                return;
+            }
+            
+            showStep(4);
+            showLoadingState();
+            
+            // --- REFINED AI PROMPT V3 ---
+            const prompt = `
+                You are an expert AI Automotive Diagnostic Assistant. Your task is to analyze the following vehicle information and generate a diagnostic report.
+                **CRITICAL INSTRUCTION**: Your entire response MUST be in Markdown format. Do NOT include any introductory or conversational phrases like "Okay, here is an analysis..." or any other text before the first heading. Your response MUST begin immediately with the first Markdown heading (e.g., "### Summary").
+
+                **Vehicle Information:**
+                - **Make:** ${vehicleData.make}
+                - **Model:** ${vehicleData.model}
+                - **Year:** ${vehicleData.year}
+
+                **Owner's Observed Symptoms:**
+                ${vehicleData.symptoms}
+
+                **On-Board Diagnostics (OBD-II) Data:**
+                - **Diagnostic Trouble Codes (DTCs):** ${vehicleData.dtcCodes}
+                - **Key Live Data Parameters:** ${vehicleData.liveData || "No specific live data provided."}
+
+                **Required Analysis Format:**
+                ### Summary
+                (A brief one-paragraph summary of the most likely problem area.)
+                ### Possible Causes
+                (A numbered list of potential causes, ordered from most likely to least likely.)
+                ### Detailed Analysis
+                (For each possible cause, a detailed explanation of why it fits the provided symptoms and codes. Use **bold text** for sub-points like **Issue causing X:**.)
+                ### Recommended Diagnostic Steps
+                (A clear, step-by-step list of actions a DIY user or mechanic could take to confirm the diagnosis.)
+                ### Important Note
+                (A concluding reminder that this is an AI-generated analysis and professional confirmation is recommended.)
+            `;
+
+            try {
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const payload = { contents: [{ role: "user", parts: [{ "text": prompt }] }] };
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                   const errorData = await response.json();
+                   throw new Error(errorData.error.message || `HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates[0].content.parts[0].text) {
+                    let aiText = result.candidates[0].content.parts[0].text.trim();
+                    
+                    // --- REFINED CLEANUP STEP ---
+                    // Find the first occurrence of a markdown heading. This makes it more robust.
+                    const firstHeadingIndex = aiText.search(/^(\*\*|#+)\s*.*/);
+                    if (firstHeadingIndex > 0) { 
+                        aiText = aiText.substring(firstHeadingIndex);
+                    }
+                    // --- END REFINED CLEANUP STEP ---
+
+                    displayResult(aiText);
+                } else {
+                    throw new Error("Received an invalid response structure from the AI.");
+                }
+            } catch (error) {
+                console.error("Error calling AI API:", error);
+                displayError(error.message || "An unknown error occurred while contacting the AI service.");
+            }
+        }
+
+        // --- UI Display Functions ---
+        function showLoadingState() {
+            outputDiv.innerHTML = '';
+            outputDiv.classList.add('hidden');
+            errorDiv.classList.add('hidden');
+            loadingDiv.classList.remove('hidden');
+        }
+
+        function displayResult(markdownText) {
+            loadingDiv.classList.add('hidden');
+            errorDiv.classList.add('hidden');
+            outputDiv.classList.remove('hidden');
+            
+            // --- REWRITTEN MARKDOWN PARSER V2 ---
+            // First, handle inline bolding across the entire text block.
+            let processedText = markdownText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            const lines = processedText.split('\n');
+            let htmlOutput = '';
+            let listType = null; 
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+
+                // Handle Headings (e.g., ### Summary)
+                if (trimmedLine.startsWith('### ')) {
+                    if (listType) { htmlOutput += `</${listType}>`; listType = null; } // Close previous list
+                    const headingText = trimmedLine.replace(/^###\s*/, '');
+                    htmlOutput += `<h3>${headingText}</h3>`;
+                    continue;
+                }
+                
+                // Handle Ordered List Items (e.g., 1. item)
+                if (/^\d+\.\s/.test(trimmedLine)) {
+                    if (listType !== 'ol') {
+                        if (listType) { htmlOutput += `</${listType}>`; } // Close ul if it was open
+                        htmlOutput += '<ol class="list-decimal list-inside space-y-1">';
+                        listType = 'ol';
+                    }
+                    htmlOutput += `<li>${trimmedLine.replace(/^\d+\.\s/, '')}</li>`;
+                    continue;
+                }
+
+                // Handle Unordered List Items (e.g., * item)
+                if (trimmedLine.startsWith('* ')) {
+                    if (listType !== 'ul') {
+                        if (listType) { htmlOutput += `</${listType}>`; } // Close ol if it was open
+                        htmlOutput += '<ul class="list-disc list-inside space-y-1">';
+                        listType = 'ul';
+                    }
+                    htmlOutput += `<li>${trimmedLine.substring(2)}</li>`;
+                    continue;
+                }
+
+                // Handle Paragraphs
+                if (listType) { htmlOutput += `</${listType}>`; listType = null; } // End any open list
+                if (trimmedLine.length > 0) {
+                    htmlOutput += `<p>${trimmedLine}</p>`;
+                }
+            }
+
+            if (listType) { htmlOutput += `</${listType}>`; } // Close any remaining open list
+            
+            outputDiv.innerHTML = htmlOutput + '<p class="text-sm text-yellow-400/80 border-l-4 border-yellow-400/80 pl-4 mt-8"><strong>Disclaimer:</strong> This is an experimental tool. The analysis is provided by an AI and may contain inaccuracies. Always consult a qualified professional mechanic for vehicle diagnosis and repair.</p>';
+        }
+
+        function displayError(message) {
+            loadingDiv.classList.add('hidden');
+            outputDiv.classList.add('hidden');
+            errorDiv.classList.remove('hidden');
+            errorMessageP.textContent = message;
+        }
+
+        // Initialize view to step 1
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(1);
+        });
+    </script>
+</body>
+</html>
